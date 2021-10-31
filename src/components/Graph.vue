@@ -61,12 +61,13 @@
       },
       async loadNewDataset() {
         this.rows = await this.parseCSV(this.$refs.file.files[0]);
+        this.$emit('update-row-count', this.rows.length - 1);
       },
       parseCSV(file) {
         return new Promise( (resolve) => {
           Papa.parse(file, {
             complete: (results) => {
-              resolve(results.data)
+              resolve(results.data);
             }
           });
         })
