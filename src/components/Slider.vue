@@ -30,8 +30,8 @@
 
 <style>
   .slider {
-		margin-left: 200px;
-		margin-right: 200px;
-		margin-top: 60px;
+		margin-left: 30%;
+		margin-right: 30%;
+		margin-top: 10%;
   }
 </style>
