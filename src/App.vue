@@ -1,27 +1,43 @@
 <template>
-  <div id="app">
-    <Graph></Graph>
-  </div>
+  <v-app>
+    <v-main>
+      <v-container>
+        <v-col>
+          <v-row>
+            <Slider
+              @update-slider-value='updateSliderValue'
+            />
+          </v-row>
+          <v-row>
+            <Graph
+              :sliderValue='sliderValue'
+            />
+          </v-row>
+        </v-col>
+      </v-container>
+    </v-main>
+  </v-app>
 </template>
 
 <script>
-import Graph from './components/Graph.vue'
+import Graph from './components/Graph';
+import Slider from './components/Slider.vue';
 
 export default {
   name: 'App',
   components: {
-    Graph
+    Graph,
+    Slider,
+  },
+  data () {
+    return {
+      sliderValue: 1,
+    }
+  },
+  methods: {
+    updateSliderValue(value) {
+      this.sliderValue = value;
+    }
   }
-}
+};
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>

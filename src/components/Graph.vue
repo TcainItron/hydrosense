@@ -5,7 +5,7 @@
       <div class="select-button">
         <span>Load a Dataset:</span>
       </div>
-      <input type="file" @change="updateGraphData" ref='file'/>
+      <input type="file" @change="loadNewDataset" ref='file'/>
   </label>
   </div>
 </template>
@@ -19,6 +19,12 @@
     components: {
       LineChart
     },
+    props: ['sliderValue'],
+    watch: {
+      sliderValue: function(newVal) {
+        this.updateGraphData(this.rows[newVal]);
+      },
+    },
     data () {
       return {
         graphData: {},
@@ -27,26 +33,29 @@
             display: false,
           },
         },
+        rows: [],
       }
     },
     methods: {
-      async updateGraphData() {
-        let rows = await this.parseCSV();
+      updateGraphData(dataPoints) {
         this.graphData = {
-          labels: rows[0],
-          datasets: rows.slice(1).map(row => new Object(
+          labels: this.rows[0],
+          datasets: [
             {
               fill: false,
               borderColor: '#f87979',
-              data: row,
+              data: dataPoints,
               tension: 0.1
             }
-          )),
+          ],
         }
       },
-      parseCSV() {
+      async loadNewDataset() {
+        this.rows = await this.parseCSV(this.$refs.file.files[0]);
+      },
+      parseCSV(file) {
         return new Promise( (resolve) => {
-          Papa.parse(this.$refs.file.files[0], {
+          Papa.parse(file, {
             complete: (results) => {
               resolve(results.data)
             }
@@ -60,7 +69,7 @@
 <style>
   .small {
     max-width: 600px;
-    margin:  150px auto;
+    margin:  50px auto;
   }
   .file-select > .select-button {
     padding: 1rem;
