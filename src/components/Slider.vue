@@ -1,7 +1,7 @@
 <template>
 		<v-slider
 			class="slider"
-		:color="color"
+			:color="color"
 			:max="max"
 			:min="min"
 			v-model='sliderValue'
@@ -28,7 +28,7 @@
 		},
 		methods: {
 			updateSliderValue() {
-				this.$emit('update-slider-value', this.sliderValue)
+				this.$emit('update-slider-value', this.sliderValue);
 			},
 		}
 	}
