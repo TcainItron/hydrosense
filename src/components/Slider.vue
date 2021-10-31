@@ -22,7 +22,7 @@
 			return {
 				sliderValue: '',
 				color: '#2EA169',
-				max: this.rowCount,
+				max: 1,
 				min: 1,
 			}
 		},
