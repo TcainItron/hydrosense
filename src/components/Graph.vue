@@ -32,6 +32,15 @@
           legend: {
             display: false,
           },
+          scales: {
+            yAxes: [{
+              ticks: {
+                min: 0,
+                max: 3000,
+                stepSize: 250,
+              }
+            }]
+          },
         },
         rows: [],
       }
