@@ -29,6 +29,9 @@
       return {
         graphData: {},
         options: {
+          animation: {
+            duration: 500,
+          },
           legend: {
             display: false,
           },
