@@ -2,20 +2,22 @@
   <v-app>
     <v-main>
       <v-container>
-        <v-col>
-          <v-row>
-            <Slider
-              @update-slider-value='updateSliderValue'
-              :rowCount="rowCount"
-            />
-          </v-row>
-          <v-row>
-            <Graph
-              @update-row-count='updateRowCount'
-              :sliderValue='sliderValue'
-            />
-          </v-row>
-        </v-col>
+        <v-row>
+          <v-col cols="9">
+            <v-row>
+              <Slider
+                @update-slider-value='updateSliderValue'
+                :rowCount="rowCount"
+              />
+            </v-row>
+            <v-row>
+              <Graph
+                @update-row-count='updateRowCount'
+                :sliderValue='sliderValue'
+              />
+            </v-row>
+          </v-col>
+        </v-row>
       </v-container>
     </v-main>
   </v-app>
@@ -43,7 +45,7 @@ export default {
     },
     updateRowCount(count) {
       this.rowCount = count;
-    }
+    },
   }
 };
 </script>
