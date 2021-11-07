@@ -36,8 +36,9 @@
 
 <style>
 	.slider {
-		margin-left: 30%;
-		margin-right: 30%;
+		margin-left: 20%;
+		margin-right: 20%;
 		margin-top: 10%;
+		width: 100%;
 	}
 </style>
