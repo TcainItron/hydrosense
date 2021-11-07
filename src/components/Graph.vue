@@ -6,7 +6,7 @@
         <span>Load a Dataset:</span>
       </div>
       <input type="file" @change="loadNewDataset" ref='file'/>
-  </label>
+    </label>
   </div>
 </template>
 
@@ -35,6 +35,8 @@
           legend: {
             display: false,
           },
+          responsive: true,
+          maintainAspectRatio: false,
           scales: {
             yAxes: [{
               ticks: {
@@ -81,8 +83,9 @@
 
 <style>
   .small {
-    max-width: 600px;
-    margin:  50px auto;
+    width: 80%;
+    height: 100%;
+    margin: 5% auto;
   }
   .file-select > .select-button {
     padding: 1rem;
