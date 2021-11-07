@@ -20,6 +20,10 @@
               <Graph
                 @update-row-count='updateRowCount'
                 :sliderValue='sliderValue'
+                :endHour='endHour'
+                :endMin='endMin'
+                :startHour='startHour'
+                :startMin='startMin'
               />
             </v-row>
           </v-col>
@@ -43,8 +47,12 @@ export default {
   },
   data () {
     return {
+      endHour: null,
+      endMin: null,
       rowCount: 0,
       sliderValue: 1,
+      startHour: null,
+      startMin: null,
     }
   },
   methods: {

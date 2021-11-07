@@ -19,7 +19,7 @@
     components: {
       LineChart
     },
-    props: ['sliderValue'],
+    props: ['endHour', 'endMin', 'startHour', 'startMin', 'sliderValue'],
     watch: {
       sliderValue: function(newVal) {
         this.updateGraphData(this.rows[newVal]);
