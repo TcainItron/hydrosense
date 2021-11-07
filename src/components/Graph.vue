@@ -24,6 +24,14 @@
       sliderValue: function(newVal) {
         this.updateGraphData(this.rows[newVal]);
       },
+      endHour: function() {
+      },
+      endMin: function() {
+      },
+      startHour: function() {
+      },
+      startMin: function() {
+      },
     },
     data () {
       return {
