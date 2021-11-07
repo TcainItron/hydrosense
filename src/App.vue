@@ -3,7 +3,12 @@
     <v-main>
       <v-container>
         <v-row>
-          <Average/>
+          <Average
+            @update-end-hour='updateEndHour'
+            @update-end-min='updateEndMin'
+            @update-start-hour='updateStartHour'
+            @update-start-min='updateStartMin'
+          />
           <v-col cols="9">
             <v-row>
               <Slider
@@ -48,6 +53,18 @@ export default {
     },
     updateRowCount(count) {
       this.rowCount = count;
+    },
+    updateEndHour(hour) {
+      this.endHour = hour;
+    },
+    updateEndMin(min) {
+      this.endMin = min;
+    },
+    updateStartHour(hour) {
+      this.startHour = hour;
+    },
+    updateStartMin(min) {
+      this.startMin = min;
     },
   }
 };
