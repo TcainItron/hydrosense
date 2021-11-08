@@ -3,12 +3,21 @@
     <v-main>
       <v-container>
         <v-row>
-          <Average
-            @update-end-hour='updateEndHour'
-            @update-end-min='updateEndMin'
-            @update-start-hour='updateStartHour'
-            @update-start-min='updateStartMin'
-          />
+          <v-col cols="3">
+            <Average
+              @update-end-hour='updateEndHour'
+              @update-end-min='updateEndMin'
+              @update-start-hour='updateStartHour'
+              @update-start-min='updateStartMin'
+            />
+            <v-btn
+              block
+              class="white--text"
+              color='#2EA169'
+              style="margin-left:5%;margin-top:10%;"
+              v-on:click='graph'
+            >Graph Avg</v-btn>
+          </v-col>
           <v-col cols="9">
             <v-row>
               <Slider
@@ -19,6 +28,7 @@
             <v-row>
               <Graph
                 @update-row-count='updateRowCount'
+                :bus='bus'
                 :sliderValue='sliderValue'
                 :endHour='endHour'
                 :endMin='endMin'
@@ -37,6 +47,7 @@
 import Average from './components/Average.vue';
 import Graph from './components/Graph';
 import Slider from './components/Slider.vue';
+import Vue from 'vue';
 
 export default {
   name: 'App',
@@ -47,6 +58,7 @@ export default {
   },
   data () {
     return {
+      bus: new Vue(),
       endHour: null,
       endMin: null,
       rowCount: 0,
@@ -56,6 +68,9 @@ export default {
     }
   },
   methods: {
+    graph() {
+      this.bus.$emit('graph');
+    },
     updateSliderValue(value) {
       this.sliderValue = value;
     },

@@ -19,20 +19,15 @@
     components: {
       LineChart
     },
-    props: ['endHour', 'endMin', 'startHour', 'startMin', 'sliderValue'],
+    props: ['bus', 'endHour', 'endMin', 'startHour', 'startMin', 'sliderValue'],
     watch: {
       sliderValue: function(newVal) {
         this.updateGraphData(this.rows[newVal]);
       },
-      endHour: function() {
-      },
-      endMin: function() {
-      },
-      startHour: function() {
-      },
-      startMin: function() {
-      },
     },
+    mounted() {
+      this.bus.$on('graph', this.graphAvg);
+    }, 
     data () {
       return {
         graphData: {},
@@ -59,6 +54,27 @@
       }
     },
     methods: {
+      graphAvg() {
+        if (!(this.endHour && this.endMin && this.startHour && this.startMin)) {
+          alert('Please select a start and end time');
+          return;
+        }
+        var start = (parseInt(this.startHour) * 60) + parseInt(this.startMin);
+        var end = (parseInt(this.endHour) * 60) + parseInt(this.endMin);
+        this.updateGraphData(this.findAvg(start, end));
+      },
+      findAvg(start, end) {
+        var rowsToBeAveraged = this.rows.slice(start+1, end+1);
+        var results = [];
+        for (var i = 0; i < this.rows[0].length; i++) {
+          results.push(0);
+          for (const row of rowsToBeAveraged) {
+            results[i] = results[i] + parseInt(row[i]);
+          }
+          results[i] = results[i] / rowsToBeAveraged.length;
+        }
+        return results
+      },
       updateGraphData(dataPoints) {
         this.graphData = {
           labels: this.rows[0],

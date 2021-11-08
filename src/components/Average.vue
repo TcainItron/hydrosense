@@ -1,5 +1,5 @@
 <template>
-	<v-col class='avgs' cols="3">
+	<div class='avgs'>
 		<h2 style='margin-left:20%;'>Graph an Average</h2>
 		<v-row>
 			<div style='margin-top:21%;margin-right:5%;width:15%;text-align:right;'>From:</div>
@@ -15,7 +15,7 @@
 			<div style="margin-top:15%;margin-left:2%;margin-right:2%;"> : </div>
 			<v-select v-model='endMin' style='width:5%;margin-top:10%;' v-on:change='updateEndMin' label="mm" :items="mins"></v-select>
 		</v-row>
-	</v-col>
+	</div>
 </template>
 
 <script>
