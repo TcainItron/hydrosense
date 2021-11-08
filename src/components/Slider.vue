@@ -6,7 +6,7 @@
 			:min="min"
 			v-model='sliderValue'
 			@input='updateSliderValue'
-	/>
+		/>
 </template>
 
 <script>
