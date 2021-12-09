@@ -1,37 +1,115 @@
 <template>
-  <v-tabs background-color="cyan" dark>
-    <v-tab>2D Grpah</v-tab>
-    <v-tab>3D Graph</v-tab>
-  </v-tabs>
+	<v-tabs background-color="#005b77" dark>
+		<v-tab
+			v-for="tab in tabs"
+			:key="tab.title"
+		>
+		{{ tab.title }}
+		</v-tab>
+
+		<div style="margin-left:auto;align-items:center;">
+			<v-btn
+				color="#005b77"
+				depressed
+				@click="uploadFile"
+			>
+				<v-icon>mdi-file-upload-outline</v-icon>
+				Upload Dataset
+			</v-btn>
+			<input
+				ref="file"
+				class="d-none"
+				type="file"
+				accept=".csv"
+				@change="loadNewDataset"
+			>
+			</div>
+
+		<v-tab-item
+			v-for="tab in tabs"
+			:key="tab.title"
+		>
+				<v-tabs background-color="#F0F0F0" color="#005b77">
+					<v-tab
+						v-for="innerTab in tab.innerTabs"
+						:key="innerTab.title"
+					>
+						{{ innerTab.title }}
+					</v-tab>
+					<v-tab-item
+						v-for="innerTab in tab.innerTabs"
+						:key="innerTab.title"
+					>
+						<component :is="innerTab.component" :rows="rows"/>
+					</v-tab-item>
+				</v-tabs>
+		</v-tab-item>
+	</v-tabs>
 </template>
 
-<!-- <script>
+<script>
+	import Specified3DGraph from './ThreeDGraph/SpecifiedDataGraph.vue';
+	import AllData3DGraph from './ThreeDGraph/AllDataGraph.vue';
+	import AverageGraph from './TwoDGraph/AverageGraph.vue';
+	import Papa from 'papaparse';
+	import SliderGraph from './TwoDGraph/SliderGraph.vue';
+
 	export default {
-		name: 'Average',
-		data () {
+		name: 'TabBar',
+		components: {
+			'avg-graph': AverageGraph,
+			'slider-graph': SliderGraph,
+			'specified-threeD-graph': Specified3DGraph,
+			'all-data-threeD-graph': AllData3DGraph,
+		},
+		data() {
 			return {
-				endHour: null,
-				endMin: null,
-				hours: [...Array(24).keys()].map(x => x.toString().padStart(2, '0')),
-				mins: [...Array(60).keys()].map(x => x.toString().padStart(2, '0')),
-				rowCount: 0,
-				sliderValue: 1,
-				startHour: null,
-				startMin: null,
+				rows: [],
+				tabs: [
+					{
+						title: '2D Graph',
+						innerTabs: [
+							{
+								title: 'Graph An Avg',
+								component: 'avg-graph',
+							},
+							{
+								title: 'Slide Through Data',
+								component: 'slider-graph'
+							}
+						]
+					},
+					{
+						title: '3D Graph',
+						innerTabs: [
+							{
+								title: 'Graph Specified Times',
+								component: 'specified-threeD-graph'
+							},
+							{
+								title: 'Graph All Data',
+								component: 'all-data-threeD-graph'
+							},
+						]
+					},
+				],
 			}
 		},
 		methods: {
-			updateEndHour() {
-				this.$emit('update-end-hour', this.endHour);
+			uploadFile() {
+				this.$refs.file.click();
 			},
-			updateEndMin() {
-				this.$emit('update-end-min', this.endMin);
+			async loadNewDataset() {
+				this.rows = await this.parseCSV(this.$refs.file.files[0]);
 			},
-			updateStartHour() {
-				this.$emit('update-start-hour', this.startHour);
-			},
-			updateStartMin() {
-				this.$emit('update-start-min', this.startMin);
+			parseCSV(file) {
+				return new Promise( (resolve) => {
+					Papa.parse(file, {
+						complete: (results) => {
+							resolve(results.data);
+						}
+					});
+				})
 			},
 		}
 	};
@@ -40,6 +118,6 @@
 <style>
 	.avgs {
 		margin-top: 10%;
-    width: 100%;
+	width: 100%;
 	}
-</style> -->
+</style>
