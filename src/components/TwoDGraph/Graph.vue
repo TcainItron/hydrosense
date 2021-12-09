@@ -1,28 +1,21 @@
 <template>
   <div class="small">
     <LineChart :chartData="graphData" :options="options"></LineChart>
-    <label class="file-select">
-      <div class="select-button">
-        <span>Load a Dataset:</span>
-      </div>
-      <input type="file" @change="loadNewDataset" ref='file'/>
-    </label>
   </div>
 </template>
 
 <script>
   import LineChart from './LineChart.js';
-  import Papa from 'papaparse';
 
   export default {
     name: 'Graph',
     components: {
       LineChart
     },
-    props: ['bus', 'endHour', 'endMin', 'startHour', 'startMin', 'sliderValue'],
+    props: ['bus', 'rows', 'sliderValue'],
     watch: {
       sliderValue: function(newVal) {
-        this.updateGraphData(this.rows[newVal]);
+        if (this.rows.length>0) this.updateGraphData(this.rows[newVal]);
       },
     },
     mounted() {
@@ -44,40 +37,57 @@
             yAxes: [{
               ticks: {
                 min: 0,
-                max: 3000,
+                suggestedMax: 3000,
                 stepSize: 250,
               }
             }]
           },
         },
-        rows: [],
       }
     },
     methods: {
-      graphAvg() {
-        if (!(this.endHour && this.endMin && this.startHour && this.startMin)) {
-          alert('Please select a start and end time');
-          return;
+      //Maybe move this to Avg.vue
+      graphAvg(times) {
+        let rows = this.findRowsToBeAveraged(times[0], times[1]);
+        if (rows) {
+          this.updateGraphData(this.findAvg(rows));
+        } else {
+          alert("Could not find start and stop times in data set");
         }
-        var start = (parseInt(this.startHour) * 60) + parseInt(this.startMin);
-        var end = (parseInt(this.endHour) * 60) + parseInt(this.endMin);
-        this.updateGraphData(this.findAvg(start, end));
       },
-      findAvg(start, end) {
-        var rowsToBeAveraged = this.rows.slice(start+1, end+1);
-        var results = [];
-        for (var i = 0; i < this.rows[0].length; i++) {
+      findAvg(rowsToBeAveraged) {
+        var results = [0];
+        for (var i = 1; i < this.rows[0].length; i++) {
+          // Pushing 0 into results before indexing to avoid index errors. The 0 immediatly gets replaced
           results.push(0);
           for (const row of rowsToBeAveraged) {
             results[i] = results[i] + parseInt(row[i]);
           }
           results[i] = results[i] / rowsToBeAveraged.length;
         }
-        return results
+        return results.slice(1);
+      },
+      findRowsToBeAveraged(start, end) {
+        let startIndex = 0;
+        let endIndex = 0;
+        for (const row in this.rows) {
+          const startPattern = new RegExp("\\b"+start+"\\b:.*");
+          if (startPattern.test(this.rows[row][0])) {
+            startIndex = row;
+          }
+          const endPattern = new RegExp("\\b"+end+"\\b:.*");
+          if (endPattern.test(this.rows[row][0])) {
+            endIndex = row;
+          }
+        }
+        if (startIndex && endIndex) {
+          return this.rows.slice(startIndex, endIndex+1);
+        }
+        return false;
       },
       updateGraphData(dataPoints) {
         this.graphData = {
-          labels: this.rows[0],
+          labels: this.rows[0].slice(1),
           datasets: [
             {
               fill: false,
@@ -87,19 +97,6 @@
             }
           ],
         }
-      },
-      async loadNewDataset() {
-        this.rows = await this.parseCSV(this.$refs.file.files[0]);
-        this.$emit('update-row-count', this.rows.length - 1);
-      },
-      parseCSV(file) {
-        return new Promise( (resolve) => {
-          Papa.parse(file, {
-            complete: (results) => {
-              resolve(results.data);
-            }
-          });
-        })
       },
     }
   }

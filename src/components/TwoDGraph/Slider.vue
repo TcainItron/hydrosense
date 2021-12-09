@@ -2,7 +2,7 @@
 		<v-slider
 			class="slider"
 			:color="color"
-			:max="max"
+			:max="rowCount"
 			:min="min"
 			v-model='sliderValue'
 			@input='updateSliderValue'
@@ -13,16 +13,10 @@
 	export default {
 		name: 'Slider',
 		props: ['rowCount'],
-		watch: {
-			rowCount: function(newVal) {
-				this.max = newVal;
-			},
-		},
 		data () {
 			return {
 				sliderValue: '',
-				color: '#2EA169',
-				max: 1,
+				color: '#005b77',
 				min: 1,
 			}
 		},
