@@ -20,5 +20,5 @@ npm run build
 npm run lint
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### Uploading Data   
+* It is very important that any and all data being uplaoded must be in a csv format, with timestamps in the exact format as they are in the `test-11-16.csv` file.
